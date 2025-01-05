@@ -13,7 +13,7 @@
             padding: 0;
             background: url('./bg copy@2x-100.jpg') no-repeat center center fixed;
             background-size: cover;
-            background-position: fixed;
+            background-position: top;
             color: #000000;
             height: 100%;
             width: 100%;
@@ -78,7 +78,7 @@
 
         textarea {
             width: calc(100% - 20px);
-            max-width: 100%;
+            max-width: 90%;
             font-size: 14px;
             color: rgb(0, 0, 0);
             line-height: 1.4;
@@ -160,7 +160,7 @@
         <h1>더 나은 세상을 향해<br>나아가는 당신에게</h1>
         <p id="display-text"></p>
         <button onclick="goToPage3()">연하장 뒷면 보기</button>
-        <button onclick="downloadPage2AsImage()">글 다운로드</button>
+        <button onclick="sharePage2()">글 공유하기</button>
     </div>
 
     <div id="page3" class="container hidden">
@@ -202,15 +202,24 @@
             link.click();
         }
 
-        function downloadPage2AsImage() {
-            html2canvas(document.body).then(function(canvas) {  // Capture the entire body instead of just page2
-                const link = document.createElement('a');
-                link.href = canvas.toDataURL();
-                link.download = 'full_page_image.png';
-                link.click();
-            });
-        }
-
+        function sharePage2() {
+            const text = document.getElementById('display-text').textContent;
+            const pageUrl = window.location.href;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: '2025 연하장',
+                    text: text,
+                    url: pageUrl
+                }).then(() => {
+                    console.log('공유 성공');
+                }).catch((error) => {
+                    console.log('공유 실패', error);
+                });
+            } else {
+                alert('이 기능은 지원되지 않는 브라우저입니다.');
+            }
+        }   
 
         function sharePage() {
             const text = document.getElementById('display-text').textContent;
