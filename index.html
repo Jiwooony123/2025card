@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>2025_newyearcard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('./bg copy@2x-100.jpg') no-repeat center center fixed;
+            background-size: cover;
+            background-position: fixed;
+            color: #000000;
+            height: 100%;
+            width: 100%;
+            font-size: 14px;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+        #page2 {
+            background-size: cover;
+            height: 100%;
+            width: 100%;
+            margin: 60px auto;
+            width: calc(100% - 100px);
+            max-width: 500px;
+            z-index: 1;
+        }
+
+        #page2 button {
+            display: block;
+            margin: 10px auto;
+        }
+
+        #page2 button:first-child {
+            margin-bottom: 20px;
+        }
+
+        .container {
+            position: relative;
+            text-align: left;
+            padding: 0px;
+            background: rgba(255, 255, 255, 0);
+            border-radius: 10px;
+            margin: 60px auto;
+            width: calc(100% - 100px);
+            max-width: 500px;
+            z-index: 1;
+        }
+
+        .hidden {
+            display: none;
+        }
+        p {
+            font-weight: bold;
+            line-height: 1.8;
+            font-size: 16px;
+            font-family: 'Pretendard', sans-serif;
+        }
+        hr {
+            border: 1px solid #000000;
+            margin: 40px 0;
+        }
+
+        textarea {
+            width: calc(100% - 20px);
+            max-width: 100%;
+            font-size: 14px;
+            color: rgb(0, 0, 0);
+            line-height: 1.4;
+            font-family: 'Pretendard', sans-serif;
+            padding: 21px;
+            border: none;
+            background-color: transparent;
+            border-radius: 5px;
+            resize: none;
+            margin: 0px auto;
+        }
+
+        textarea::placeholder {
+            color: rgb(135, 135, 135);
+        }
+
+        .font-size-control {
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: right;
+            font-size: 12px;
+            font-family: 'Pretendard', sans-serif;
+        }
+
+        .font-size-control label {
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #000000;
+            background-color: #ffffff;
+            border-radius: 5px;
+            border-width: 1.5px;
+            border-color: black;
+            cursor: pointer;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 20px auto;
+        }
+        button:hover {
+            color: white;
+            background-color: #000000;
+        }
+
+        #page3 {
+            background-color: white;
+        }
+
+        #page3 img {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="page1" class="container">
+        <h1>디지털<br>솟대와 장승</h1>
+        <p>【솟대와 장승】은 전통적으로 집과 마을의 안전과 번영을 기원하며 악귀와 재난을 막아주는 상징물입니다. 【솟대와 장승】은 마을의 수호신 역할을 합니다.</p>
+        <p>이 【디지털 솟대와 장승】은 소중한 사람에게 보내는 특별한 메시지가 되어, 새로운 시대를 맞이하는 당신의 수호신이 될 것입니다. 당신이 소망하는 미래의 모습을 담아 간직하고 또 공유해보세요. 고민거리, 새해 소망도 좋습니다. 이 연하장이 더 나은 미래를 기원하는 따뜻한 메시지가 되길 바랍니다.</p>
+        <hr>
+        <textarea id="text-input" placeholder="당신의 이야기를 자유롭게 적어주세요."></textarea>
+        <hr>
+        <div class="font-size-control">
+            <label for="font-size">글씨 크기를 조절해보세요!</label>
+            <input type="range" id="font-size" min="10" max="40" value="16" onchange="adjustTextAreaFontSize()">
+        </div>
+    </div>
+    <button onclick="goToPage2()">내용 저장하기</button>
+
+    <div id="page2" class="container hidden">
+        <h1>더 나은 세상을 향해<br>나아가는 당신에게</h1>
+        <p id="display-text"></p>
+        <button onclick="goToPage3()">연하장 뒷면 보기</button>
+        <button onclick="downloadPage2AsImage()">글 다운로드</button>
+    </div>
+
+    <div id="page3" class="container hidden">
+        <img src="./2025background.png" alt="Background Image" style="display:block; margin-left:auto; margin-right:auto;">
+        <p style="text-align:center; font-size: 14px; color: white; margin-top: 20px; position: relative; top: 50%; transform: translateY(50%);">《수호신, the cheering stick》<br>다운받아 배경화면으로 사용하세요!</p>
+        <button onclick="downloadBackground()">이미지 저장하기</button>
+        <button onclick="sharePage()">🔗</button>
+    </div>
+
+    <script>
+        function adjustTextAreaFontSize() {
+            const fontSize = document.getElementById('font-size').value + 'px';
+            document.getElementById('text-input').style.fontSize = fontSize;
+            document.getElementById('display-text').style.fontSize = fontSize;
+        }
+
+        function goToPage2() {
+            const text = document.getElementById('text-input').value.trim();
+            if (text === "") {
+                alert("내용을 작성해주세요.");
+                return;
+            }
+            document.getElementById('page1').classList.add('hidden');
+            document.getElementById('page2').classList.remove('hidden');
+            document.querySelector('button').style.display = 'none';
+            document.getElementById('display-text').textContent = text;
+        }
+
+        function goToPage3() {
+            document.getElementById('page2').classList.add('hidden');
+            document.getElementById('page3').classList.remove('hidden');
+            document.getElementById('page3').style.backgroundColor = 'white';
+        }
+
+        function downloadBackground() {
+            const link = document.createElement('a');
+            link.href = './2025background.png';
+            link.download = './2025background.png';
+            link.click();
+        }
+
+        function downloadPage2AsImage() {
+            html2canvas(document.body).then(function(canvas) {  // Capture the entire body instead of just page2
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL();
+                link.download = 'full_page_image.png';
+                link.click();
+            });
+        }
+
+
+        function sharePage() {
+            const text = document.getElementById('display-text').textContent;
+            const pageUrl = window.location.href;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: '2025 연하장',
+                    text: text,
+                    url: pageUrl
+                }).then(() => {
+                    console.log('공유 성공');
+                }).catch((error) => {
+                    console.log('공유 실패', error);
+                });
+            } else {
+                alert('이 기능은 지원되지 않는 브라우저입니다.');
+            }
+        }
+    </script>
+</body>
+</html>
