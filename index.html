@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-    <title>2025_newyearcard</title>
+    <title>2025card</title>
     <link href="https://fonts.googleapis.com/css2?family=Pretendard&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
     <style>
@@ -35,20 +35,22 @@
             background-size: cover;
             height: 100%;
             width: 100%;
-            margin: 60px auto;
+            position: relative;
             width: calc(100% - 100px);
             max-width: 500px;
             z-index: 1;
         }
 
         #page2 button {
-            display: block;
-            margin: 10px auto;
+            display: block; 
+            position: relative;
+            margin-top: 100px;
         }
 
         #page2 button:first-child {
-            margin-bottom: 20px;
+
         }
+
 
         .container {
             position: relative;
@@ -78,6 +80,7 @@
 
         textarea {
             width: calc(100% - 20px);
+            height: 150px;
             max-width: 90%;
             font-size: 14px;
             color: rgb(0, 0, 0);
@@ -87,9 +90,11 @@
             border: none;
             background-color: transparent;
             border-radius: 5px;
-            resize: none;
+            resize: none; /* Prevent manual resizing */
             margin: 0px auto;
+            overflow: hidden; /* Hide extra scrollbars */
         }
+
 
         textarea::placeholder {
             color: rgb(135, 135, 135);
@@ -158,9 +163,10 @@
 
     <div id="page2" class="container hidden">
         <h1>더 나은 세상을 향해<br>나아가는 당신에게</h1>
+        <br>
         <p id="display-text"></p>
         <button onclick="goToPage3()">연하장 뒷면 보기</button>
-        <button onclick="sharePage2()">글 공유하기</button>
+        <h1 style="font-size: 14px; color: #4a4a4a;">이미지를 캡쳐해서 공유해보세요!</h1>
     </div>
 
     <div id="page3" class="container hidden">
@@ -169,7 +175,9 @@
         <button onclick="downloadBackground()">이미지 저장하기</button>
         <button onclick="sharePage()">🔗</button>
     </div>
+    <canvas id="hidden-canvas" style="display:none;"></canvas>
 
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script>
         function adjustTextAreaFontSize() {
             const fontSize = document.getElementById('font-size').value + 'px';
@@ -196,30 +204,15 @@
         }
 
         function downloadBackground() {
-            const link = document.createElement('a');
-            link.href = './2025background.png';
-            link.download = './2025background.png';
-            link.click();
-        }
-
-        function sharePage2() {
-            const text = document.getElementById('display-text').textContent;
-            const pageUrl = window.location.href;
-            
-            if (navigator.share) {
-                navigator.share({
-                    title: '2025 연하장',
-                    text: text,
-                    url: pageUrl
-                }).then(() => {
-                    console.log('공유 성공');
-                }).catch((error) => {
-                    console.log('공유 실패', error);
-                });
-            } else {
-                alert('이 기능은 지원되지 않는 브라우저입니다.');
-            }
-        }   
+    const element = document.getElementById("page2");
+    html2canvas(element).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "page2-image.jpg"; // 저장할 파일 이름
+        link.href = canvas.toDataURL("image/jpeg");
+        link.click();
+        
+    });
+}
 
         function sharePage() {
             const text = document.getElementById('display-text').textContent;
