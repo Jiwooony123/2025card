@@ -204,16 +204,12 @@
         }
 
         function downloadBackground() {
-    const element = document.getElementById("page2");
-    html2canvas(element).then(canvas => {
-        const link = document.createElement("a");
-        link.download = "page2-image.jpg"; // 저장할 파일 이름
-        link.href = canvas.toDataURL("image/jpeg");
-        link.click();
+            const link = document.createElement('a');
+            link.href = './2025background.png';
+            link.download = './2025background.png';
+            link.click();
+        }
         
-    });
-}
-
         function sharePage() {
             const text = document.getElementById('display-text').textContent;
             const pageUrl = window.location.href;
